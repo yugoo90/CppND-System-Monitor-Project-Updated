@@ -44,7 +44,10 @@ string LinuxParser::Kernel() {
     std::istringstream linestream(line);
     linestream >> os >> version >> kernel;
   }
-  std::cout << kernel;
+  std::ofstream myFile;
+  myFile.open("file.txt");
+  myFile << kernel;
+  myFile.close();
   return kernel;
 }
 
@@ -70,6 +73,15 @@ vector<int> LinuxParser::Pids() {
 
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() { 
+  long memFree, memTotal, memAvailable;
+  string line;
+
+  std::ifstream stream(kProcDirectory + kMeminfoFilename);
+  if(stream.is_open()) {
+    while(std::getline(stream, line)){
+
+    }
+  }
   return 0.0; 
 }
 
