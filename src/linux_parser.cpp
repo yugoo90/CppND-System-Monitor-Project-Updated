@@ -44,10 +44,6 @@ string LinuxParser::Kernel() {
     std::istringstream linestream(line);
     linestream >> os >> version >> kernel;
   }
-  std::ofstream myFile;
-  myFile.open("file.txt");
-  myFile << kernel;
-  myFile.close();
   return kernel;
 }
 
@@ -73,16 +69,38 @@ vector<int> LinuxParser::Pids() {
 
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() { 
-  long memFree, memTotal, memAvailable;
-  string line;
+  long memFree, memTotal, buffers, cached, sReclaimable, shMem;
+  float memAvailable;
+  string line, key, value;
 
   std::ifstream stream(kProcDirectory + kMeminfoFilename);
   if(stream.is_open()) {
     while(std::getline(stream, line)){
-
+      std::istringstream lineStream(line);
+      while(lineStream >> key >> value){
+        if(key == "MemTotal:"){
+          memTotal = std::stol(value);
+        }
+        else if(key == "MemFree:"){
+          memFree = std::stol(value);
+        }
+        else if(key == "Buffers:"){
+          buffers = std::stol(value);
+        }
+        else if(key == "Cached:"){
+          cached = std::stol(value);
+        }
+        else if(key == "SReclaimable:"){
+          sReclaimable = std::stol(value);
+        }
+        else if(key == "Shmem"){
+          shMem = std::stol(value);
+        }
+      }
     }
+    memAvailable = (memTotal - memFree - buffers - cached - sReclaimable + shMem) / memTotal;
   }
-  return 0.0; 
+  return memAvailable; 
 }
 
 // TODO: Read and return the system uptime
