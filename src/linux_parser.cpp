@@ -192,12 +192,12 @@ long LinuxParser::ActiveJiffies() {
 // TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() { 
   long idle, IOWait, idleJiffies;
-  string line, kIdle, kIOWait;
+  string line, kUser, kNice, ksystem, kIdle, kIOWait, kIrq, kSoftIrq, kSteal;
   std::ifstream stream(kProcDirectory + kStatFilename);
   if(stream.is_open()){
     std::getline(stream, line);
     std::istringstream linestream(line);
-    linestream >> kIdle >> kIOWait;
+    linestream >> kUser >> kNice >> ksystem >> kIdle >> kIOWait >> kIrq >> kSoftIrq >> kSteal;
     idle = std::stol(kIdle);
     IOWait = std::stol(kIOWait);
     idleJiffies = idle + IOWait;
