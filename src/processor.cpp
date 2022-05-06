@@ -2,7 +2,10 @@
 #include "processor.h"
 #include "linux_parser.h"
 
-Processor(){
+using std::string;
+using std::vector;
+
+Processor::Processor(){
     previdle_ = 0;
     previowait_ = 0;
     previrq_ = 0;
@@ -17,8 +20,8 @@ Processor(){
     PrevTotal_ = 0;
     Idle_ = 0;
     NonIdle_ = 0;
-    Total_ =0;
-    totald_ = 0
+    Total_ = 0;
+    totald_ = 0;
     idled_ = 0;
 }
 // TODO: Return the aggregate CPU utilization
@@ -49,14 +52,14 @@ float Processor::Utilization() {
 
     cpu_Utilization = (totald_ - idled_)/totald_;
 
-    prevuser_ = user;
-    prevnice_ = nice;
-    prevsystem_ = system;
+    prevuser_ = user_;
+    prevnice_ = nice_;
+    prevsystem_ = system_;
     previdle_ = idle_;
     previowait_ = iowait_;
     previrq_ = irq_;
     prevsoftirq_ = softirq_;
     prevsteal_ = steal_;
-    
+
     return cpu_Utilization; 
 }

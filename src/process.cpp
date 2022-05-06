@@ -11,9 +11,15 @@ using std::string;
 using std::to_string;
 using std::vector;
 
+// Process constructor
+Process::Process(int pid){
+    pid_ = pid;
+}
+
 // TODO: Return this process's ID
 int Process::Pid() { 
-    return pid; }
+    return pid_; 
+}
 
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() { return 0; }
