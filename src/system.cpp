@@ -17,13 +17,13 @@ using std::vector;
 // TODO: Return the system's CPU
 Processor& System::Cpu() { 
     return cpu_;
-
+}
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
     vector<int> pids = LinuxParser::Pids();
     for(auto pid: pids){
         Process myPid(pid);
-        processes_.push_back(myPid(pid));
+        processes_.push_back(myPid);
     }
     return processes_; 
 }
