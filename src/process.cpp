@@ -22,12 +22,13 @@ int Process::Pid() {
 }
 
 // TODO: Return this process's CPU utilization
-float Process::CpuUtilization() { 
+float Process::CpuUtilization() const { 
     long util = LinuxParser::ActiveJiffies(pid_);
     long totalTime;
     float cpuUtil;
+    long time = UpTime();
     totalTime = util / sysconf(_SC_CLK_TCK);
-    cpuUtil = totalTime / UpTime();
+    cpuUtil = totalTime / time;
     return cpuUtil; 
 }
 
@@ -47,7 +48,7 @@ string Process::User() {
 }
 
 // TODO: Return the age of this process (in seconds)
-long int Process::UpTime() { 
+long int Process::UpTime() const { 
     return LinuxParser::UpTime(Pid());
  }
 
