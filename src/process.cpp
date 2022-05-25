@@ -12,7 +12,7 @@ using std::to_string;
 using std::vector;
 
 // Process constructor
-Process::Process(int pid){
+Process::Process(int pid) {
     pid_ = pid;
 }
 
@@ -22,7 +22,7 @@ int Process::Pid() {
 }
 
 // TODO: Return this process's CPU utilization
-float Process::CpuUtilization() const { 
+float Process::CpuUtilization() { 
     long util = LinuxParser::ActiveJiffies(pid_);
     long totalTime;
     float cpuUtil;
@@ -48,12 +48,12 @@ string Process::User() {
 }
 
 // TODO: Return the age of this process (in seconds)
-long int Process::UpTime() const { 
+long int Process::UpTime() { 
     return LinuxParser::UpTime(Pid());
  }
 
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a) const { 
+bool Process::operator<(Process const& a) { 
     return a.CpuUtilization() < CpuUtilization(); 
 }
