@@ -55,5 +55,6 @@ long int Process::UpTime() {
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
 bool Process::operator<(Process& a) { 
-    return a.CpuUtilization() < CpuUtilization(); 
+    long int util = std::stol(Ram());
+    return std::stol(a.Ram()) < util;
 }

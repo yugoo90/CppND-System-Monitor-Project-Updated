@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+
 #include "process.h"
 #include "processor.h"
 #include "system.h"
@@ -59,4 +60,8 @@ int System::TotalProcesses() {
 // TODO: Return the number of seconds since the system started running
 long int System::UpTime() { 
     return LinuxParser::UpTime(); 
+}
+
+void System::sort() {
+    std::sort(processes_.begin(), processes_.end());
 }
