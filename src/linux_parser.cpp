@@ -157,8 +157,10 @@ long LinuxParser::ActiveJiffies(int pid) {
   if(stream.is_open()){
     while(std::getline(stream, line)){
       std::istringstream linestream(line);
-      linestream >> jiffy;
-      jiffies.push_back(jiffy);
+      while(linestream >> jiffy){
+        jiffies.push_back(jiffy);
+      }
+      
     }
     for(int counter = 13; counter < 17; counter++){
       activeJiffies += std::stol(jiffies[counter]);
