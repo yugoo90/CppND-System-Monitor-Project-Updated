@@ -150,6 +150,7 @@ long LinuxParser::Jiffies() {
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::ActiveJiffies(int pid) { 
+
   long activeJiffies;
   string line, jiffy;
   vector<string> jiffies;
@@ -348,5 +349,5 @@ long LinuxParser::UpTime(int pid) {
     }
     upTime = std::stol(info[counter]);
   }
-  return upTime; 
+  return upTime / sysconf(_SC_CLK_TCK); 
 }
