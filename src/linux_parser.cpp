@@ -69,38 +69,23 @@ vector<int> LinuxParser::Pids() {
 
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() { 
-  long memFree, memTotal, buffers, cached, sReclaimable, shMem;
-  float memAvailable;
-  string line, key, value;
-
+  float total = 1, free = 1;
+  string line, key;
   std::ifstream stream(kProcDirectory + kMeminfoFilename);
   if(stream.is_open()) {
     while(std::getline(stream, line)){
       std::istringstream lineStream(line);
-      while(lineStream >> key >> value){
-        if(key == "MemTotal:"){
-          memTotal = std::stol(value);
-        }
-        else if(key == "MemFree:"){
-          memFree = std::stol(value);
-        }
-        else if(key == "Buffers:"){
-          buffers = std::stol(value);
-        }
-        else if(key == "Cached:"){
-          cached = std::stol(value);
-        }
-        else if(key == "SReclaimable:"){
-          sReclaimable = std::stol(value);
-        }
-        else if(key == "Shmem"){
-          shMem = std::stol(value);
-        }
+      lineStream >> key;
+      if(key == "MemTotal:"){
+        lineStream >> total;
+      }
+      else if(key == "MemAvailable:"){
+        lineStream >> free;
+        break;
       }
     }
-    memAvailable = (memTotal - memFree - buffers - cached - sReclaimable + shMem) / memTotal;
   }
-  return memAvailable; 
+  return (total - free) / total; 
 }
 
 // TODO: Read and return the system uptime
@@ -167,7 +152,7 @@ long LinuxParser::ActiveJiffies(int pid) {
       activeJiffies += std::stol(jiffies[counter]);
     }
   }
-  return activeJiffies; 
+  return activeJiffies / sysconf(_SC_CLK_TCK); 
 }
 
 // TODO: Read and return the number of active jiffies for the system
@@ -283,7 +268,8 @@ string LinuxParser::Command(int pid) {
 // TODO: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Ram(int pid) { 
-  string line, ram, key, value;
+  string line, key, value;
+  string ram = "0";
   std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatusFilename);
   if(stream.is_open()){
     while(std::getline(stream, line)){
@@ -293,6 +279,9 @@ string LinuxParser::Ram(int pid) {
           ram = value;
         }
       }
+      int num = std::stoi(ram);
+      num = num / 1024;
+      ram = std::to_string(num);
     }
   }
   return ram;
